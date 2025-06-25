@@ -3,12 +3,18 @@ import { signOut } from "firebase/auth";
 import './css/sidebar.css';
 import {auth} from '../firebase';
 import { useNavigate } from "react-router-dom";
-
 export default function SideBar(){
     const nav = useNavigate();
     const handleLogout = () =>{
-        signOut(auth);
-        nav('/Login');
+        signOut(auth)
+        .then(() =>{
+            alert("User successfully signed Out");
+            nav('/');
+        })
+        .catch((error) => {
+            console.log("Sign out error: ", error);
+        })
+        
     }
     return(
         <div className="sidebar">
