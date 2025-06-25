@@ -13,8 +13,9 @@ export default function Login() {
     try {
       await signInWithEmailAndPassword(auth, email, password)
       navigate('/Home');
+      alert('Login Successful');
     } catch (error) {
-      alert('Login failed: ' + error)
+      alert('Login failed: ' + error);
     }
   }
 

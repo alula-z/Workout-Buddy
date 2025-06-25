@@ -9,7 +9,7 @@
 .auth-container input {
   display: block;
   width: 100%;
-  margin: 0.5rem 0 1rem;
+  margin: 0.5rem 0 1rem 0;
   padding: 0.5rem;
 }
 
@@ -21,3 +21,21 @@
   border-radius: 4px;
   cursor: pointer;
 }
+
+.auth-container h2{
+  justify-self: center;
+  text-decoration: underline;
+  text-underline-offset: 0.5rem;
+  
+}
+
+.auth-container p{
+  justify-self: center;
+}
+
+.auth-container button{
+  display:block;
+  margin:0 auto;
+
+}
+
