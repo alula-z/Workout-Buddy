@@ -1,4 +1,4 @@
-import './navbar.css';
+import './css/navbar.css';
 import React from 'react';
 export default function TopNav() {
     return (
