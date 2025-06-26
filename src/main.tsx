@@ -5,18 +5,23 @@ import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import './index.css'
 import Home from './pages/Home'
+import Create from './pages/Create'
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Login />,
   },
   {
-    path: "/Home",
+    path: "/home",
     element: <Home />,
   },
   {
     path: "/signup",
     element: <SignUp />,
+  },
+  {
+    path: "/create",
+    element: <Create/>,
   },
 ])
 

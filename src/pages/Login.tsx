@@ -12,7 +12,7 @@ export default function Login() {
     e.preventDefault()
     try {
       await signInWithEmailAndPassword(auth, email, password)
-      navigate('/Home');
+      navigate('/home');
       alert('Login Successful');
     } catch (error) {
       alert('Login failed: ' + error);
