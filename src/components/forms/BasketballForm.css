@@ -1,0 +1,27 @@
+.section-div{
+    justify-items: center;
+    align-items: center;
+}
+
+.Form-subsection{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+
+}
+
+input{
+    height: 2rem;
+    align-self: center;
+    margin-left: 1rem;
+}
+
+
+.Form-container{
+    background-color: rgba(247, 247, 247, 0.995);
+    padding: 1rem 2rem;
+    border-radius: 9px;
+}
+.Form-container button{
+    justify-content: space-between;
+}

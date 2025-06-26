@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import './BasketballForm.css';
 export default function BasketballForm(){
     const[totalShots, setTotalShots] = useState('');
     const [madeShots, setMadeShots] = useState('');
@@ -10,14 +11,15 @@ export default function BasketballForm(){
     const [date, setDate] = useState('');
 
     const handleSubmit = () =>{
-        
+
     }
+  
     return(
         <div className = "section-div">
             <h1 className = "Title">Basketball Workout</h1>
             <form className = "Form-container" onSubmit={handleSubmit}>
                 <div className = "Form-subsection">
-                    <h2>Date</h2>
+                    <h2>Date:</h2>
                     <input
                         type = "date"
                         value = {date}
@@ -26,7 +28,7 @@ export default function BasketballForm(){
                     />
                 </div>
                 <div className = "Form-subsection">
-                    <h2>Shots Attempted</h2>
+                    <h2>Shots Attempted:</h2>
                     <input 
                         type = "number"
                         value = {totalShots}
@@ -35,7 +37,7 @@ export default function BasketballForm(){
                     />
                 </div>
                 <div className = "Form-subsection">
-                    <h2>Made Shots</h2>
+                    <h2>Made Shots:</h2>
                     <input 
                         type = "number"
                         value = {madeShots}
@@ -45,7 +47,7 @@ export default function BasketballForm(){
                     />
                 </div>
                 <div className = "Form-subsection">
-                    <h2>Missed Shots</h2>
+                    <h2>Missed Shots:</h2>
                     <input 
                         type = "number"
                         value = {missedShots}
@@ -55,7 +57,7 @@ export default function BasketballForm(){
                     />
                 </div>
                 <div className = "Form-subsection">
-                    <h2> Threes Attempted</h2>
+                    <h2> Threes Attempted:</h2>
                     <input 
                         type = "number"
                         value = {totalThreeAttempted}
@@ -64,7 +66,7 @@ export default function BasketballForm(){
                     />
                 </div>
                 <div className = "Form-subsection">
-                    <h2>Made Threes</h2>
+                    <h2>Made Threes:</h2>
                     <input 
                         type = "number"
                         value = {madeThrees}
@@ -74,7 +76,7 @@ export default function BasketballForm(){
                     />
                 </div>
                 <div className = "Form-subsection">
-                    <h2> Missed Threes</h2>
+                    <h2> Missed Threes:</h2>
                     <input 
                         type = "number"
                         value = {missedThrees}
@@ -84,6 +86,7 @@ export default function BasketballForm(){
                     />
                 </div>
                 <button type = "submit">Submit Workout</button>
+                <button type = "reset">Clear</button>
             </form>
         </div>
     )
