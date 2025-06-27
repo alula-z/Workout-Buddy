@@ -1,16 +1,58 @@
-import React from "react";
 import { useState } from "react";
 import './BasketballForm.css';
-export default function BasketballForm(){
+import {auth,db} from '../../firebase';
+import { collection, doc,setDoc } from "firebase/firestore";
+import React from "react";
+export default function BasketballForm({sport} : {sport: string}){
     const[totalShots, setTotalShots] = useState('');
     const [madeShots, setMadeShots] = useState('');
-    const [missedShots, setMissedShots] = useState('');
     const [totalThreeAttempted, setTotalThreeAttempted] = useState(''); 
-    const [missedThrees, setMissedThrees] = useState('');
+ 
     const [madeThrees, setMadeThrees] = useState('');
     const [date, setDate] = useState('');
-
-    const handleSubmit = () =>{
+    
+    const handleSubmit = async(e: React.FormEvent) => {
+        console.log("Entered Handle submit");
+        e.preventDefault();
+        
+        //set user ID if found
+        const user = auth.currentUser;
+        if(!sport || !date){
+            alert("Sport and Date are required");
+        }
+         if(user){
+            //User found and uid is set
+            const uid = user.uid;
+            console.log("Full Firestore path:", `users/${user.uid}/${sport}/${date}`);
+            try{
+                const missedShots = Number(totalShots) - Number(madeShots);
+                const missedThrees = Number(totalThreeAttempted) - Number(madeThrees);
+                //Set data fields to userData
+                const userData = {
+                    totalShots: Number(totalShots),
+                    madeShots: Number(madeShots),
+                    missedShots: missedShots,
+                    totalThreeAttempted: Number(totalThreeAttempted),
+                    missedThrees: missedThrees,
+                    madeThrees: Number(madeThrees),
+                    date: date
+                }
+                console.log(userData);
+                const workoutRef = doc(collection(db, "users",uid, sport),date);
+                //Add data to Firebase Database
+                await setDoc(workoutRef,userData, {merge:true});
+                console.log("Saved to:", `users/${uid}/${sport}/${date}`);
+                console.log("Data:", userData);
+                alert("data saved");
+            }catch(error){
+                console.log(error);
+                alert(error);
+            }
+       
+        }else{
+            //Alert when user is not logged in
+            alert("User Not Logged In");
+        }
 
     }
   
@@ -47,16 +89,6 @@ export default function BasketballForm(){
                     />
                 </div>
                 <div className = "Form-subsection">
-                    <h2>Missed Shots:</h2>
-                    <input 
-                        type = "number"
-                        value = {missedShots}
-                        onChange = {(e) =>setMissedShots(e.currentTarget.value)}
-                        placeholder="Missed Shots"
-                        
-                    />
-                </div>
-                <div className = "Form-subsection">
                     <h2> Threes Attempted:</h2>
                     <input 
                         type = "number"
@@ -75,18 +107,9 @@ export default function BasketballForm(){
 
                     />
                 </div>
-                <div className = "Form-subsection">
-                    <h2> Missed Threes:</h2>
-                    <input 
-                        type = "number"
-                        value = {missedThrees}
-                        onChange = {(e) =>setMissedThrees(e.currentTarget.value)}
-                        placeholder="Missed Three Point Shots"
-                        
-                    />
+                <div className = "button-section">
+                    <button type = "submit">Submit Workout</button>
                 </div>
-                <button type = "submit">Submit Workout</button>
-                <button type = "reset">Clear</button>
             </form>
         </div>
     )

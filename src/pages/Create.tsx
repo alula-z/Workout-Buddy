@@ -7,13 +7,14 @@ export default function Create(){
     const renderFields = () =>{
         switch (sport) {
             case "Basketball":
-                return <BasketballForm/>
+                return <BasketballForm sport = {sport}/>
             case "Running":
                 return <RunningForm/>
             default: 
                 return null;
         }
     }
+    
     return(
         <Layout>
             <div>
@@ -22,9 +23,7 @@ export default function Create(){
                 <option value = "Basketball">Basketball</option>
                 <option value = "Running">Running</option>
             </select>
-                <form>
-                    {renderFields()}
-                </form>
+                {renderFields()}
             </div>
         </Layout>
     )
