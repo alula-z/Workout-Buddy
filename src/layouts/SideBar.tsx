@@ -1,4 +1,3 @@
-import React from "react";
 import { signOut } from "firebase/auth";
 import './css/sidebar.css';
 import {auth} from '../firebase';
@@ -18,7 +17,7 @@ export default function SideBar(){
     }
     return(
         <div className="sidebar">
-            <a href = "/">Home</a>
+            <a href = "/home">Home</a>
             <a href = "/create">Create</a>
             <a href = "/stats">Stats</a>
             <a href = "/profile">Profile</a>
