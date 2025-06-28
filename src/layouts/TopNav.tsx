@@ -8,16 +8,6 @@ export default function TopNav() {
                     Workout Buddy
                 </a>
             </div>
-            <div className = "navbar-center">
-                <ul className = "nav-links">
-                    <li>
-                        <a href = "/create">Create</a>
-                    </li>
-                    <li>
-                        <a href = "/stats">Stats</a>
-                    </li>
-                </ul>
-            </div>
             <div className = "navbar-right">
                 <a href = "/profile">Profile</a>
             </div>

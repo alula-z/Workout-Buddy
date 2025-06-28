@@ -1,7 +1,8 @@
-import { createUserWithEmailAndPassword } from "firebase/auth"
+import { createUserWithEmailAndPassword,signInWithEmailAndPassword } from "firebase/auth"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { auth } from "../firebase"
+import { auth,db } from "../firebase"
+import { doc,setDoc,collection } from "firebase/firestore"
 
 export default function SignUp() {
     const [email, setEmail] = useState('');
@@ -10,12 +11,30 @@ export default function SignUp() {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const navigate = useNavigate();
-    //const [user, setUser] = useState(null);
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault()
         try {
+          //Create user with email and password
           await createUserWithEmailAndPassword(auth, email, password);
-          navigate('/')
+
+          //Sign in newly created user
+          await signInWithEmailAndPassword(auth,email,password);
+          //Create data to input to User
+          const userProfileData = {
+            firstName: firstName,
+            lastName: lastName,
+          }
+          const user = auth.currentUser;
+          //New user uid
+          if(user){
+            const uid = user.uid;
+            //Add data to database
+            const userData = doc(collection(db, "users", uid, "Profile"));
+            await setDoc(userData, userProfileData, {merge: true});
+          }
+
+          //navigate to home page
+          navigate('/home');
         } catch (error) {
           alert('Login failed: ' + error)
         }
