@@ -9,7 +9,7 @@ export default function Create(){
             case "Basketball":
                 return <BasketballForm sport = {sport}/>
             case "Running":
-                return <RunningForm/>
+                return <RunningForm sport = {sport}/>
             default: 
                 return null;
         }
