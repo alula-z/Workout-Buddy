@@ -1,11 +1,9 @@
 import Layout from "../layouts/layouts";
 import {auth, db} from "../firebase";
-import { useNavigate } from "react-router-dom";
 import {doc,getDoc} from 'firebase/firestore';
 import { useState,useEffect } from "react";
 export default function Profile(){
     const user = auth.currentUser;
-    const nav = useNavigate();
     const uid = user?.uid;
     const [userData, setUserData] = useState<userProfile | null>(null);
 
