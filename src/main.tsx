@@ -7,6 +7,7 @@ import './index.css';
 import Home from './pages/Home';
 import Create from './pages/Create';
 import Profile from './pages/Profile';
+
 const router = createBrowserRouter([
   {
     path: "/",
