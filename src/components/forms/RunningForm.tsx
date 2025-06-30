@@ -32,7 +32,7 @@ export default function RunningForm({sport} : {sport: string}) {
                 averageTimeInSeconds %= 60;
                 const averageSec = Math.floor(averageTimeInSeconds);
 
-                const averageTime = averageHours.toString() + " hr(s) " + averageMin.toString() + " min " + averageSec.toString() + " sec";
+                const averageTime = averageHours.toString() + ":" + averageMin.toString() + ":" + averageSec.toString() + "";
                 const totalTimeRanFormatted = hoursRan + " hr(s) " + minRan + " min " + secondsRan + " sec";
                 //Set data fields to userData
                 const userData = {
