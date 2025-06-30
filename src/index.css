@@ -6,6 +6,29 @@
   border-radius: 8px;
 }
 
+.workouts-graph{
+  background-color: lightgray;
+  display: flex;
+  border-radius: 35px;
+  margin-bottom: 2rem;
+}
+.workouts-graph h3{
+  align-self: center;
+  margin-left: 2rem;
+  
+}
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+
+}
+.stat-category{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
 .auth-container input {
   display: block;
   width: 100%;

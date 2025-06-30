@@ -43,7 +43,6 @@ export default function BasketballForm({sport} : {sport: string}){
                 await setDoc(workoutRef,userData, {merge:true});
                 console.log("Saved to:", `users/${uid}/${sport}/${date}`);
                 console.log("Data:", userData);
-                alert("data saved");
             }catch(error){
                 console.log(error);
                 alert(error);

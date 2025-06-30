@@ -13,7 +13,6 @@ export default function Login() {
     try {
       await signInWithEmailAndPassword(auth, email, password)
       navigate('/home');
-      alert('Login Successful');
       console.log("Login Succesfull");
     } catch (error) {
       alert('Login failed: ' + error);

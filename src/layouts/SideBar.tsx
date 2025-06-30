@@ -7,7 +7,6 @@ export default function SideBar(){
     const handleLogout = () =>{
         signOut(auth)
         .then(() =>{
-            alert("User successfully signed Out");
             nav('/');
         })
         .catch((error) => {
