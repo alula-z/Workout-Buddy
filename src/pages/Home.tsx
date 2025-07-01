@@ -1,6 +1,6 @@
 import Layout from '../layouts/layouts'
 import {auth, db }from '../firebase';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PieChart} from '@mui/x-charts/PieChart';
 import { collection, getDocs } from 'firebase/firestore';
 export default function Home() {
@@ -20,39 +20,59 @@ export default function Home() {
         time_ran: string,
     }
 
-    const initialRunningData : runningDataForm = {
-        average_time: '',
-        date: '',
-        distance_ran_mi: 0,
-        time_ran: '',
-    }
-    const initialBasketballData : basketballDataForm = {
-        date:'',
-        madeShots: 0,
-        madeThrees: 0,
-        missedShots: 0,
-        missedThrees: 0,
-        totalShots: 0,
-        totalThreeAttempted: 0,
-    }
     
     const user = auth.currentUser;
     const [sport, setSport] = useState('');
-    const [basketballData, setBasketballData] = useState(initialBasketballData);
-    const [runningData, setRunningData] = useState(initialRunningData);
+    const [basketballData, setBasketballData] = useState<basketballDataForm[]>([]);
+    const [runningData, setRunningData] = useState<runningDataForm[]>([]);
     const fetchCollection= async() =>{
         try{
             if(user){
                 const fetchedCollection = collection(db, "users", user.uid, sport);
                 const fetchedDocs = getDocs(fetchedCollection);
-                (await fetchedDocs).forEach((doc) => {
-                    d
-                })
+                if(sport == 'Basketball'){
+                    const tempBasketballData : basketballDataForm[] = [];
+                    (await fetchedDocs).forEach((doc) => {
+                        const data = doc.data();
+                        const currBasketballDoc : basketballDataForm = {
+                            date: data.date,
+                            madeShots: data.madeShots,
+                            missedShots: data.missedShots,
+                            madeThrees: data.madeThrees,
+                            missedThrees:data.missedThrees,
+                            totalShots: data.totalShots,
+                            totalThreeAttempted: data.totalThreeAttempted,
+                        }
+                        tempBasketballData.push(currBasketballDoc);
+                    })
+
+                    setBasketballData(tempBasketballData);
+                }else if(sport == 'Running'){
+                        const tempRunningData: runningDataForm[] = [];
+                        (await fetchedDocs).forEach((doc) => {
+                            const data = doc.data();
+                            const currRunningDoc : runningDataForm = {
+                                date: data.date,
+                                time_ran: data.time_ran,
+                                distance_ran_mi: data.distance_ran_mi,
+                                average_time: data.average_time,
+                            }
+                            tempRunningData.push(currRunningDoc);
+                        })
+                        setRunningData(tempRunningData);
+                }
             }
         }catch(error){
             console.log(error);
         }
     }
+
+    useEffect(() =>{
+        if (sport){
+            fetchCollection();
+        }
+    }, [sport]);
+
     return (
     <Layout>
         <h1> Welcome {user?.email}</h1>
@@ -89,9 +109,9 @@ export default function Home() {
                             colors = {["Green",  "red"]}
                             series={
                                 [{
-                                    data: [
-                                        {id: 0, value: 10, label: "FG Made"},
-                                        {id: 2, value :10, label: "FG Missed"},
+                                    data:[
+                                        {id: 0, value : basketballData.reduce((sum, d) => sum + d.madeShots, 0), label: "FG Made"},
+                                        {id: 1, value :basketballData.reduce((sum, d) => sum + d.missedShots,0), label: "FG Missed"},
                                     ],
                                     cornerRadius: 3,
                                 }]
@@ -107,8 +127,8 @@ export default function Home() {
                             series={
                                 [{
                                     data: [
-                                        {id: 0, value :10, label: "Threes Made"},
-                                        {id: 1, value :1, label: "Threes Missed"},
+                                        {id: 0, value :basketballData.reduce((sum, d) => sum + d.madeThrees,0), label: "Threes Made"},
+                                        {id: 1, value :basketballData.reduce((sum, d) => sum + d.missedThrees,0), label: "Threes Missed"},
                                     ],
                                     cornerRadius: 3,
                                 }]
