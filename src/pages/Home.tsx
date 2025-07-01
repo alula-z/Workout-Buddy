@@ -1,8 +1,9 @@
 import Layout from '../layouts/layouts'
 import {auth, db }from '../firebase';
+import type { User } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { PieChart} from '@mui/x-charts/PieChart';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs,getCountFromServer } from 'firebase/firestore';
 export default function Home() {
     type basketballDataForm = {
         date: string,
@@ -19,19 +20,36 @@ export default function Home() {
         distance_ran_mi: number,
         time_ran: string,
     }
-
-    
-    const user = auth.currentUser;
+    const [user, setUser] = useState<User | null>(null);
     const [sport, setSport] = useState('');
     const [basketballData, setBasketballData] = useState<basketballDataForm[]>([]);
     const [runningData, setRunningData] = useState<runningDataForm[]>([]);
-    const fetchCollection= async() =>{
+    const [basketballWorkoutCount, setBasketballWorkoutCount] = useState('');
+    const [runningWorkoutCount, setRunningWorkoutCount] = useState('');
+    const fetchWorkouts = async() => {
+        try{
+            if(user){
+            const basketballCollection = collection(db, "users", user.uid, "Basketball");
+            const runningCollection = collection(db, "users", user.uid, "Running");
+            const basketballSnapshot = await getCountFromServer(basketballCollection);
+            const runningSnapshot = await getCountFromServer(runningCollection);
+            setBasketballWorkoutCount(basketballSnapshot.data().count.toString());
+            setRunningWorkoutCount(runningSnapshot.data().count.toString());
+            }else{
+                return;
+            }
+        }catch(error){
+            console.log(error);
+        }
+    }
+    const fetchWorkoutStats= async() =>{
         try{
             if(user){
                 const fetchedCollection = collection(db, "users", user.uid, sport);
                 const fetchedDocs = getDocs(fetchedCollection);
                 if(sport == 'Basketball'){
                     const tempBasketballData : basketballDataForm[] = [];
+
                     (await fetchedDocs).forEach((doc) => {
                         const data = doc.data();
                         const currBasketballDoc : basketballDataForm = {
@@ -60,16 +78,32 @@ export default function Home() {
                             tempRunningData.push(currRunningDoc);
                         })
                         setRunningData(tempRunningData);
+                        console.log(runningData);
                 }
             }
         }catch(error){
             console.log(error);
         }
     }
+    
 
+    useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((firebaseUser) => {
+        if (firebaseUser) {
+        setUser(firebaseUser);
+        }
+    });
+    return () => unsubscribe();
+    }, []);
+
+    useEffect(() => {
+        if(user){
+            fetchWorkouts();
+        }
+    },[user]);
     useEffect(() =>{
         if (sport){
-            fetchCollection();
+            fetchWorkoutStats();
         }
     }, [sport]);
 
@@ -79,14 +113,14 @@ export default function Home() {
         <div className = "data">
             <div className = "workouts-graph">
                 <h3>Workouts</h3>
+                {basketballWorkoutCount && runningWorkoutCount ? ( 
                 <PieChart
                     colors = {['lightGreen', 'lightBlue', "lightYellow"]}
                     series = {[
                         {
                             data: [
-                                {id: 0, value: 10, label: 'Dummy data A'},
-                                {id: 1, value: 20, label: 'Dummy data B'},
-                                {id: 2, value: 20, label: 'Dummy data C'},
+                                {id: 0, value: Number(basketballWorkoutCount), label: 'Basketball'},
+                                {id: 1, value: Number(runningWorkoutCount), label: 'Running'},
                             ],
                             cornerRadius: 6,
                         }
@@ -94,6 +128,9 @@ export default function Home() {
                     width={200}
                     height={200}
                 />
+                ) : (
+                    <h2 style={{marginLeft: '2rem'}}>...Loading </h2>
+                )}
             </div>
             <div className = "sportSpecific-data">
                 <select value={sport} onChange={(e) => setSport(e.target.value)}> 
@@ -119,7 +156,7 @@ export default function Home() {
                             width={150}
                             height = {150}
                         />
-                        <p>FG%: ---</p>
+                        <p>FG%: {(Number(basketballData.reduce((sum, d) => sum + d.madeShots,0))/Number(basketballData.reduce((sum, d) => sum + d.totalShots, 0))).toFixed(2).toString()}%</p>
                         </div>
                         <div className = "stat-category">
                         <PieChart
@@ -137,7 +174,7 @@ export default function Home() {
                             width={150}
                             height = {150}
                         />
-                        <p>3P%: ---</p>
+                        <p>3P%: {(Number(basketballData.reduce((sum, d) => sum + d.madeThrees,0))/Number(basketballData.reduce((sum, d) => sum + d.totalThreeAttempted, 0))).toFixed(2).toString()}%</p>
                         </div>
                         <div className = "stat-category">
                         <PieChart
