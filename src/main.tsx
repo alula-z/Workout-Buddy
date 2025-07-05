@@ -7,6 +7,7 @@ import './index.css';
 import Home from './pages/Home';
 import Create from './pages/Create';
 import Profile from './pages/Profile';
+import AllStats from './pages/AllStats';
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
     path: "/profile",
     element: <Profile/>,
   },
+  {
+    path: "all-stats",
+    element: <AllStats/>
+  }
 
 ])
 

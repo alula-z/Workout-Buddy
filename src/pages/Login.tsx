@@ -15,7 +15,8 @@ export default function Login() {
       navigate('/home');
       console.log("Login Succesfull");
     } catch (error) {
-      alert('Login failed: ' + error);
+      alert('Login failed: Incorrect username/password');
+      console.log(error);
     }
   }
 

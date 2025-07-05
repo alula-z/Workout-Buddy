@@ -18,7 +18,7 @@ export default function SideBar(){
         <div className="sidebar">
             <a href = "/home">Home</a>
             <a href = "/create">Create</a>
-            <a href = "/stats">Stats</a>
+            <a href = "/all-stats">All Stats</a>
             <a href = "/profile">Profile</a>
             <button onClick={handleLogout}>Log Out</button>
         </div>
