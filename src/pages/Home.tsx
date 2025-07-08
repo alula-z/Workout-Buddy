@@ -4,6 +4,8 @@ import type { User } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { PieChart} from '@mui/x-charts/PieChart';
 import { collection, getDocs,getCountFromServer } from 'firebase/firestore';
+
+
 export default function Home() {
     type basketballDataForm = {
         date: string,
@@ -197,7 +199,7 @@ export default function Home() {
                     </div>
                 ): (
                     <div>
-
+                       
                     </div>
                 )}
             </div>

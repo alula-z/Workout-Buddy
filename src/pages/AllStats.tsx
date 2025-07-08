@@ -3,20 +3,21 @@ import { Table,TableBody,TableCell,TableContainer, TableHead, TableRow } from "@
 import { useEffect, useState } from "react";
 import {auth,db} from '../firebase';
 import { collection,getDocs } from "firebase/firestore";
+import type { User } from "firebase/auth";
 export default function AllStats() {
-    const user = auth.currentUser;
     
     type basicRowData = {
         date: string,
         sport: string,
     }
     const [basicData, setBasicData] = useState<basicRowData[]>([]);
+    const [user, setUser] = useState<User | null>(null);
     const fillTable = async() =>{
         try{
             if(user){
                 const uid = user.uid;
-                const basketballCollectionData = collection(db, "users", uid, "basketball");
-                const runningColelctionData = collection(db, "users", uid, "running");
+                const basketballCollectionData = collection(db, "users", uid, "Basketball");
+                const runningColelctionData = collection(db, "users", uid, "Running");
                 const tempData : basicRowData[] = [];
                 const basketballData = getDocs(basketballCollectionData);
                 const runningData = getDocs(runningColelctionData);
@@ -35,10 +36,20 @@ export default function AllStats() {
             console.log(error);
         }
     }
-
-    useEffect(()=>{
-        fillTable();
-    },[]);
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((firebaseUser) => {
+            if (firebaseUser) {
+            setUser(firebaseUser);
+            }
+        });
+        return () => unsubscribe();
+        }, []);
+    
+        useEffect(() => {
+            if(user){
+                fillTable();
+            }
+        },[user]);
     return(
         <Layout>
             <div>
