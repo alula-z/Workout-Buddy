@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import {auth,db} from '../firebase';
 import { collection,getDocs } from "firebase/firestore";
 import type { User } from "firebase/auth";
+import '../index.css';
 export default function AllStats() {
     
     type basicRowData = {
         date: string,
         sport: string,
     }
+    const [workoutCount, setWorkoutCount] = useState('');
     const [basicData, setBasicData] = useState<basicRowData[]>([]);
     const [user, setUser] = useState<User | null>(null);
     const fillTable = async() =>{
@@ -29,6 +31,7 @@ export default function AllStats() {
                     const data = doc.data();
                     tempData.push({date: data.date, sport: "Running"})
                 })
+                setWorkoutCount(tempData.length.toString());
                 setBasicData(tempData);
             }
             
@@ -50,23 +53,25 @@ export default function AllStats() {
                 fillTable();
             }
         },[user]);
+       
     return(
         <Layout>
             <div>
-                <h2>All Stats</h2>
+                <h2>All Workouts</h2>
+                <h3>Workout Entries: {workoutCount}</h3>
                 <TableContainer>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
                             <TableRow>
-                                <TableCell>Date</TableCell>
-                                <TableCell align = "left">Sport</TableCell>
+                                <TableCell className = "header-cell" align= "center" ><b>Date</b></TableCell>
+                                <TableCell className = "header-cell" align= "center"><b>Sport</b></TableCell>
                             </TableRow>
                         </TableHead>
-                        <TableBody>
+                        <TableBody className = "table-body">
                             {basicData.map((row) =>(
                                 <TableRow style={{justifyItems: "space-between", backgroundColor: "lightGray"}}>
-                                    <TableCell >{row.date}</TableCell>
-                                    <TableCell align = "left">{row.sport}</TableCell>
+                                    <TableCell className = "body-cell" align= "center" >{row.date}</TableCell>
+                                    <TableCell className = "body-cell" align = "center">{row.sport}</TableCell>
                                 </TableRow>
                             ))}
                             

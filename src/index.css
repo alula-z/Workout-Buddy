@@ -29,6 +29,41 @@
 
 }
 
+/*
+*
+*
+*
+    All Stats Page 
+*
+*
+*
+*/
+
+Table{
+  background-color: lightskyblue;
+  border-radius: 20px;
+  border-bottom: 2px solid black;
+}
+
+.header-cell{
+  text-decoration:underline;
+  text-underline-offset: 5px;
+}
+
+.body-cell{
+  background-color: lightcyan;
+  border: 2px solid black;
+}
+
+
+
+
+
+
+
+
+
+
 .auth-container input {
   display: block;
   width: 100%;
