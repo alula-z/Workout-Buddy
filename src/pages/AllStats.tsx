@@ -23,11 +23,11 @@ export default function AllStats() {
                 const runningData = getDocs(runningColelctionData);
                 (await basketballData).forEach((doc) => {
                     const data = doc.data();
-                    tempData.push({date: data.date, sport: "basketball"});
+                    tempData.push({date: data.date, sport: "Basketball"});
                 });
                 (await runningData).forEach((doc) =>{
                     const data = doc.data();
-                    tempData.push({date: data.date, sport: "running"})
+                    tempData.push({date: data.date, sport: "Running"})
                 })
                 setBasicData(tempData);
             }
@@ -55,26 +55,20 @@ export default function AllStats() {
             <div>
                 <h2>All Stats</h2>
                 <TableContainer>
-                    <Table>
+                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
                             <TableRow>
                                 <TableCell>Date</TableCell>
-                                <TableCell>Sport</TableCell>
+                                <TableCell align = "left">Sport</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {basicData ? (
-                                <div>
-                                {basicData.map((row) =>(
-                                    <TableRow>
-                                        <TableCell>{row.date}</TableCell>
-                                        <TableCell>{row.sport}</TableCell>
-                                    </TableRow>
-                                ))}
-                                </div>
-                            ) : (
-                                <h2>Loading ...</h2>
-                            )}
+                            {basicData.map((row) =>(
+                                <TableRow style={{justifyItems: "space-between", backgroundColor: "lightGray"}}>
+                                    <TableCell >{row.date}</TableCell>
+                                    <TableCell align = "left">{row.sport}</TableCell>
+                                </TableRow>
+                            ))}
                             
                         </TableBody>
                     </Table>
