@@ -57,8 +57,10 @@ export default function AllStats() {
     return(
         <Layout>
             <div>
-                <h2>All Workouts</h2>
-                <h3>Workout Entries: {workoutCount}</h3>
+                <div className = "page-header">
+                    <h2>All Workouts</h2>
+                    <h3>Workout Entries: {workoutCount}</h3>
+                </div>
                 <TableContainer>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>

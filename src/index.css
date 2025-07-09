@@ -55,6 +55,10 @@ Table{
   border: 2px solid black;
 }
 
+.page-header{
+  justify-items: center;
+}
+
 
 
 
